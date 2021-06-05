@@ -1,4 +1,4 @@
-﻿namespace InvestmentProjection.Models.Api
+﻿namespace InvestmentProjection.BusinessLogic.Models
 {
     public enum RiskLevel
     {

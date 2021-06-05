@@ -1,4 +1,6 @@
-﻿using InvestmentProjection.Models.Api;
+﻿using InvestmentProjection.BusinessLogic.Handlers.CalculationsHandler;
+using InvestmentProjection.BusinessLogic.Models;
+using InvestmentProjection.BusinessLogic.Models.Requests;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
@@ -9,6 +11,13 @@ namespace InvestmentProjection.Controllers
     [Produces("application/json")]
     public class CalculationsController : ControllerBase
     {
+        private readonly ICalculationsHandler _calculationsHandler;
+
+        public CalculationsController(ICalculationsHandler calculationsHandler)
+        {
+            _calculationsHandler = calculationsHandler;
+        }
+
         [HttpGet("[action]")]
         public JsonResult CalculateChartData(
             [Required] decimal lumpSumInvestment,
@@ -26,7 +35,9 @@ namespace InvestmentProjection.Controllers
                 RiskLevel = riskLevel
             };
 
-            return new JsonResult(request);
+            var chartData = _calculationsHandler.GetChartData(request);
+
+            return new JsonResult(chartData);
         }
     }
 }
