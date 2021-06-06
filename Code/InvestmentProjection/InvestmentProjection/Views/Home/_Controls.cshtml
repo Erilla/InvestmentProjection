@@ -56,14 +56,14 @@
             data: data,
             success: function (response) {
                 createChart(
-                    response.result.labels,
-                    response.result.totalInvestedDataSet,
+                    response.labels,
+                    response.totalInvestedDataSet,
                     data.targetValue,
                     data.timescale,
-                    response.result.wideLowerBoundsGrowth,
-                    response.result.wideUpperBoundsGrowth,
-                    response.result.narrowLowerBoundsGrowth,
-                    response.result.narrowUpperBoundsGrowth,
+                    response.wideLowerBoundsGrowth,
+                    response.wideUpperBoundsGrowth,
+                    response.narrowLowerBoundsGrowth,
+                    response.narrowUpperBoundsGrowth,
                 );
             },
             error: function (response) {

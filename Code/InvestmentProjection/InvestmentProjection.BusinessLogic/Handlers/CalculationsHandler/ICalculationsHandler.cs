@@ -6,6 +6,6 @@ namespace InvestmentProjection.BusinessLogic.Handlers.CalculationsHandler
 {
     public interface ICalculationsHandler
     {
-        Task<ChartData> GetChartDataAsync(CalculateChartDataRequest request);
+        ChartData GetChartData(CalculateChartDataRequest request);
     }
 }
