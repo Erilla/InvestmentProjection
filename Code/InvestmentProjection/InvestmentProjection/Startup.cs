@@ -1,4 +1,5 @@
 using InvestmentProjection.BusinessLogic.Handlers.CalculationsHandler;
+using InvestmentProjection.BusinessLogic.Handlers.GrowthFigureHandler;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -23,6 +24,7 @@ namespace InvestmentProjection
             services.AddSwaggerGen();
 
             services.AddScoped<ICalculationsHandler, CalculationsHandler>();
+            services.AddScoped<IGrowthFigureHandler, GrowthFigureHandler>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

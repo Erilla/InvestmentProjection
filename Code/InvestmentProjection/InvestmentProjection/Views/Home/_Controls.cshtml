@@ -55,10 +55,19 @@
             url: url,
             data: data,
             success: function (response) {
-                createChart(response.result.labels, response.result.totalInvestedDataSet, data.targetValue, data.timescale);
+                createChart(
+                    response.result.labels,
+                    response.result.totalInvestedDataSet,
+                    data.targetValue,
+                    data.timescale,
+                    response.result.wideLowerBoundsGrowth,
+                    response.result.wideUpperBoundsGrowth,
+                    response.result.narrowLowerBoundsGrowth,
+                    response.result.narrowUpperBoundsGrowth,
+                );
             },
             error: function (response) {
-                $("#Test").html("Error");
+
             }
         });
 

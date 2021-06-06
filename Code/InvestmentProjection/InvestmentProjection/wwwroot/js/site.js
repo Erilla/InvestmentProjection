@@ -1,28 +1,99 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿var chart;
 
-// Write your JavaScript code.
+var defaultLegendClickHandler = Chart.defaults.plugins.legend.onClick;
+var pieDoughnutLegendClickHandler = Chart.controllers.doughnut.overrides.plugins.legend.onClick;
+var newLegendClickHandler = function (e, legendItem, legend) {
+    var index = legendItem.datasetIndex;
+    var type = legend.chart.config.type;
 
-var chart;
+    if (index === 0) {
+        // Do the original logic
+        if (type === 'pie' || type === 'doughnut') {
+            pieDoughnutLegendClickHandler(e, legendItem, legend)
+        } else {
+            defaultLegendClickHandler(e, legendItem, legend);
+        }
 
-function createChart(labels, totalInvestmentData, targetValue, timeScale)
+    } else if (index === 1) {
+        let ci = legend.chart;
+        [
+            ci.getDatasetMeta(1),
+            ci.getDatasetMeta(2)
+        ].forEach(function (meta) {
+            meta.hidden = meta.hidden === null ? !ci.data.datasets[index].hidden : null;
+        });
+        ci.update();
+    } else if (index === 3) {
+        let ci = legend.chart;
+        [
+            ci.getDatasetMeta(3),
+            ci.getDatasetMeta(4)
+        ].forEach(function (meta) {
+            meta.hidden = meta.hidden === null ? !ci.data.datasets[index].hidden : null;
+        });
+        ci.update();
+    }
+};
+
+function createChart(
+    labels,
+    totalInvestmentData,
+    targetValue,
+    timeScale,
+    wideLowerBoundsData,
+    wideUpperBoundsData,
+    narrowLowerBoundsData,
+    narrowUpperBoundsData)
 {
     if (chart) chart.destroy();
 
     var totalInvestment = {
         label: "Total Investment",
-        fill: false,
         lineTension: 0.1,
-        backgroundColor: "rgba(75,192,192,0.4)",
-        borderColor: "rgba(75,192,192,1)",
+        borderWidth: 3,
+        backgroundColor: "rgba(0,0,0,1)",
+        borderColor: "rgba(0,0,0,1)",
+        fill: false,
         data: totalInvestmentData,
     };
+
+    var wideLowerBounds = {
+        label: 'Wide Bounds',
+        borderColor: 'rgba(0, 24, 176, 0.3)',
+        backgroundColor: 'rgba(0, 24, 176, 0.3)',
+        fill: "+1",
+        data: wideLowerBoundsData,
+    };
+
+    var wideUpperBounds = {
+        label: 'Wide Upper Bounds',
+        borderColor: 'rgba(0, 24, 176, 0.3)',
+        backgroundColor: 'rgba(0, 24, 176, 0.3)',
+        fill: "-1",
+        data: wideUpperBoundsData,
+    };
+
+    var narrowLowerBounds = {
+        label: 'Narrow Bounds',
+        borderColor: 'rgba(250, 162, 0, 0.5)',
+        backgroundColor: 'rgba(250, 162, 0, 0.5)',
+        fill: "+1",
+        data: narrowLowerBoundsData
+    }
+
+    var narrowUpperBounds = {
+        label: 'Narrow Upper Bounds',
+        borderColor: 'rgba(250, 162, 0, 0.5)',
+        backgroundColor: 'rgba(250, 162, 0, 0.5)',
+        fill: "-1",
+        data: narrowUpperBoundsData
+    }
 
     var config = {
         type: 'line',
         data: {
             labels: labels,
-            datasets: [totalInvestment]
+            datasets: [totalInvestment, narrowLowerBounds, narrowUpperBounds, wideLowerBounds, wideUpperBounds]
         },
         options: {
             responsive: true,
@@ -58,28 +129,41 @@ function createChart(labels, totalInvestmentData, targetValue, timeScale)
                         {
                             type: 'line',
                             scaleID: 'y',
-                            borderWidth: 3,
+                            borderWidth: 1,
                             borderColor: 'red',
                             value: targetValue,
                             label: {
                                 content: 'Target Value',
-                                enabled: true
+                                enabled: true,
+                                position: "start",
                             }
                         },
                         {
                             type: 'line',
                             scaleID: 'x',
-                            borderWidth: 3,
+                            borderWidth: 1,
                             borderColor: 'green',
                             value: timeScale,
                             label: {
                                 content: 'End Timescale',
-                                enabled: true
+                                enabled: true,
+                                position: "end",
                             }
                         }
                     ]
-                }
-            },
+                },
+                legend: {
+                    onClick: newLegendClickHandler,
+                    labels: {
+                        filter: function (item, chart) {
+                            return item.datasetIndex === 0 || item.datasetIndex === 1 || item.datasetIndex === 3;
+                        }
+                    }
+                },
+                tooltip: {
+                    enabled: false
+                },
+            }
         }
     };
 
