@@ -35,7 +35,7 @@ namespace InvestmentProjection.Controllers
                 RiskLevel = riskLevel
             };
 
-            var chartData = _calculationsHandler.GetChartData(request);
+            var chartData = _calculationsHandler.GetChartDataAsync(request);
 
             return new JsonResult(chartData);
         }

@@ -2,7 +2,7 @@
 {
     public class GraphDataSet
     {
-        public int X { get; set; }
+        public decimal X { get; set; }
 
         public decimal Y { get; set; }
     }

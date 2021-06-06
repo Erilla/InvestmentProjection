@@ -1,0 +1,14 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "Chart.js@3.3.2",
+      "destination": "wwwroot/lib/Chart.js/"
+    },
+    {
+      "library": "chartjs-plugin-annotation@1.0.2",
+      "destination": "wwwroot/lib/chartjs-plugin-annotation/"
+    }
+  ]
+}
